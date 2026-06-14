@@ -88,6 +88,11 @@ class DobotDemo:
 
     def parseResultId(self, valueRecv):
         # 解析返回值，确保机器人在 TCP 控制模式
+        if isinstance(valueRecv, bytes):
+            valueRecv = valueRecv.decode("utf-8", errors="ignore")
+        if not isinstance(valueRecv, str):
+            print("返回值类型异常:", type(valueRecv), valueRecv)
+            return [3]
         if "Not Tcp" in valueRecv:
             print("Control Mode Is Not Tcp")
             return [1]

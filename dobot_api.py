@@ -160,7 +160,7 @@ class DobotApi:
         """
         Read the return value
         """
-        data = ""
+        data = b""
         try:
             data = self.socket_dobot.recv(1024)
         except Exception as e:
@@ -168,10 +168,10 @@ class DobotApi:
             self.socket_dobot = self.reConnect(self.ip, self.port)
 
         finally:
-            if len(data) == 0:
-                data_str = data
+            if isinstance(data, bytes):
+                data_str = str(data, encoding="utf-8") if len(data) > 0 else ""
             else:
-                data_str = str(data, encoding="utf-8")
+                data_str = str(data) if len(data) > 0 else ""
             # self.log(f'Receive from {self.ip}:{self.port}: {data_str}')
             return data_str
 
